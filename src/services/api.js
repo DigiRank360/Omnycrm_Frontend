@@ -1,5 +1,6 @@
 const TOKEN_KEY = 'crm_token'
 const USER_KEY = 'crm_user'
+const API_URL = (import.meta.env.VITE_API_URL || '/api').replace(/\/+$/, '')
 
 export const tokenStore = {
   get: () => localStorage.getItem(TOKEN_KEY),
@@ -24,7 +25,7 @@ export async function api(path, { method = 'GET', body } = {}) {
   const token = tokenStore.get()
   let res
   try {
-    res = await fetch(`/api${path}`, {
+    res = await fetch(`${API_URL}${path.startsWith('/') ? path : `/${path}`}`, {
       method,
       headers: {
         ...(body && { 'Content-Type': 'application/json' }),
